@@ -5,4 +5,4 @@ In this game, you have to defeat your oponents by firing your tank against other
 The last one standing, wins.
 
 ## Specifications
-* This proyect is created for academic purpousese only.
+* This proyect is created for academic purposes only.
