@@ -16,7 +16,7 @@ void ATankPlayerController::BeginPlay()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s is selected"), *(ControlledTank->GetName()));
+		UE_LOG(LogTemp, Warning, TEXT("%s is possessed by the Player"), *(ControlledTank->GetName()));
 	}
 }
 
