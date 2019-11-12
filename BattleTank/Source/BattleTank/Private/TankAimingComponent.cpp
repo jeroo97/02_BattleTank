@@ -3,6 +3,7 @@
 
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
+#include "TankTurret.h"
 #include "Components/StaticMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -26,6 +27,11 @@ void UTankAimingComponent::BeginPlay()
 void UTankAimingComponent::SetBattelReference(UTankBarrel * BarrelToSet)
 {
 	Barrel = BarrelToSet;
+}
+
+void UTankAimingComponent::SetTurretReference(UTankTurret * TurretToSet)
+{
+	Turret = TurretToSet;
 }
 
 // Called every frame
@@ -60,6 +66,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
 		auto TankName = GetOwner()->GetName();
 		MoveBarrelTowards(AimDirection);
+		MoveTurretTowards(AimDirection);
 		UE_LOG(LogTemp, Warning, TEXT("Aim solution found."));
 	}
 	else
@@ -78,5 +85,13 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	Barrel->Elevate(DeltaRotator.Pitch);
 }
 
+void UTankAimingComponent::MoveTurretTowards(FVector AimDirection) 
+{
+	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
+	auto AimsAsRotator = AimDirection.Rotation();
+	auto DeltaRotator = AimsAsRotator - BarrelRotator;
+
+	Turret->RotateTurret(DeltaRotator.Pitch);
+}
 
 
