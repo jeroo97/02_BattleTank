@@ -21,9 +21,6 @@ UTankAimingComponent::UTankAimingComponent()
 void UTankAimingComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	
 }
 
 void UTankAimingComponent::SetBattelReference(UTankBarrel * BarrelToSet)
@@ -52,6 +49,9 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		StartLocation,
 		HitLocation,
 		LaunchSpeed,
+		false,
+		0,
+		0,
 		ESuggestProjVelocityTraceOption::DoNotTrace
 	);
 
@@ -60,6 +60,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
 		auto TankName = GetOwner()->GetName();
 		MoveBarrelTowards(AimDirection);
+		UE_LOG(LogTemp, Warning, TEXT("Aim solution found."));
 	}
 	else
 	{
@@ -72,8 +73,9 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimsAsRotator = AimDirection.Rotation();
+	auto DeltaRotator = AimsAsRotator - BarrelRotator;
 
-	Barrel->Elevate(5);
+	Barrel->Elevate(DeltaRotator.Pitch);
 }
 
 

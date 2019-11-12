@@ -3,10 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
 #include "TankAimingComponent.generated.h"
 
 // Forward declaration.
+class UActorComponent;
 class UTankBarrel;
 
 // Holds barrel's properties and Elevate method

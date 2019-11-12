@@ -3,12 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/StaticMeshComponent.h"
 #include "TankBarrel.generated.h"
 
 /**
  * 
  */
+class UStaticMesh;
+
 UCLASS(meta = (BlueprintSpawnableComponent), hideCategories = ("Collision"))
 class BATTLETANK_API UTankBarrel : public UStaticMeshComponent
 {
@@ -19,7 +20,7 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Setup")
-	float MaxDegreesPerSecond = 20;
+	float MaxDegreesPerSecond = 5;
 
 	UPROPERTY(EditAnywhere, Category = "Setup")
 	float MaxElevationDegrees = 40;
