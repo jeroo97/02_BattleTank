@@ -5,6 +5,7 @@
 #include "..\Public\Tank.h"
 #include "Components/StaticMeshComponent.h"
 #include "TankAimingComponent.h"
+#include "GameFramework/Actor.h"
 
 // Sets default values
 ATank::ATank()
@@ -43,3 +44,8 @@ void ATank::SetTurretReference(UTankTurret* TurretToSet)
 	TankAimingComponent->SetTurretReference(TurretToSet);
 }
 
+void ATank::Fire()
+{
+	auto Time = GetWorld()->GetTimeSeconds();
+	UE_LOG(LogTemp, Warning, TEXT("%f: is fiering a projectile."), Time);
+}
