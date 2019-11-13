@@ -24,15 +24,15 @@ void UTankAimingComponent::BeginPlay()
 	Super::BeginPlay();
 }
 
-void UTankAimingComponent::SetBattelReference(UTankBarrel * BarrelToSet)
+void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
-	if (!BarrelToSet) { return; }
+	if (!IsValid(BarrelToSet)) { return; }
 	Barrel = BarrelToSet;
 }
 
 void UTankAimingComponent::SetTurretReference(UTankTurret * TurretToSet)
 {
-	if (!TurretToSet) { return; }
+	if (!IsValid(TurretToSet)) { return; }
 	Turret = TurretToSet;
 }
 
@@ -48,8 +48,9 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
 	if (!IsValid(Barrel)) { return; }
 
-	FVector OutLaunchVelocity;
+	FVector OutLaunchVelocity(0);
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
+
 	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity
 	(
 		this,
@@ -68,11 +69,6 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
 		auto TankName = GetOwner()->GetName();
 		MoveBarrelTowards(AimDirection);
-	}
-	else
-	{
-		auto Time = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("%f: No aim solution found."), Time);
 	}
 }
 
