@@ -21,5 +21,9 @@ private:
 	void BeginPlay() override;
 
 	virtual void Tick(float DeltaTime) override;
+
+	// How colse can the AI tank get to the player.
+	UPROPERTY(EditDefaultsOnly, Category = "Navigation")
+	float AcceptanceRadius = 3000;
 };
 
