@@ -32,7 +32,10 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void AimAt(FVector HitLocation, float LaunchSpeed);
+	void AimAt(FVector HitLocation);
+
+	UPROPERTY(EditDefaultsOnly, Category = "Fire")
+	float LaunchSpeed = 8000;
 
 protected:
 	// Called when the game starts
