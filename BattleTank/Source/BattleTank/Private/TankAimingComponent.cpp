@@ -70,7 +70,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
-	if (!Barrel || !Turret)
+	if (!ensure(Barrel) || !ensure(Turret))
 		return;
 
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
