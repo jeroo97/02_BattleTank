@@ -10,7 +10,8 @@ enum class EFiringStatus : uint8
 {
 	Reloading,
 	Aiming,
-	Locked
+	Locked,
+	NoAmmo
 };
 
 // Forward declaration.
@@ -39,6 +40,9 @@ public:
 	void Fire();
 
 	EFiringStatus GetFiringState() const;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Firing")
+	int Ammo = 3;
 
 protected:
 	// Called when the game starts
@@ -70,5 +74,4 @@ private:
 	void MoveBarrelTowards(FVector AimDirection);
 
 	double LastFireTime = 0;
-
 };

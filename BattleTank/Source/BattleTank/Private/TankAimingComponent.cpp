@@ -24,19 +24,25 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if ((FPlatformTime::Seconds() - LastFireTime) < ReloadTimeInSeconds)
+	if (Ammo > 0)
 	{
-		FiringState = EFiringStatus::Reloading;
-	}
-	else if (IsBarrelMoving())
-	{
-		FiringState = EFiringStatus::Aiming;
+		if ((FPlatformTime::Seconds() - LastFireTime) < ReloadTimeInSeconds)
+		{
+			FiringState = EFiringStatus::Reloading;
+		}
+		else if (IsBarrelMoving())
+		{
+			FiringState = EFiringStatus::Aiming;
+		}
+		else
+		{
+			FiringState = EFiringStatus::Locked;
+		}
 	}
 	else
 	{
-		FiringState = EFiringStatus::Locked;
+		FiringState = EFiringStatus::NoAmmo;
 	}
-	// TODO Handle aiming and locked states.
 }
 
 // Called when the game starts
@@ -127,12 +133,13 @@ void UTankAimingComponent::Fire()
 	if (!ensure(ProjectileBlueprint))
 		return;
 
-	if (FiringState != EFiringStatus::Reloading)
+	if (FiringState != EFiringStatus::Reloading && FiringState != EFiringStatus::NoAmmo)
 	{
 		// Spawn projectile at the socket of the barrel
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, Barrel->GetSocketLocation(FName("Projectile")), Barrel->GetSocketRotation(FName("Projectile")));
 		Projectile->LaunchProjectile(LaunchSpeed);
 		LastFireTime = FPlatformTime::Seconds();
+		Ammo--;
 	}
 }
 
