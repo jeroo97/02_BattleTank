@@ -52,7 +52,7 @@ void UTankAimingComponent::Initialise(UTankBarrel * BarrelToSet, UTankTurret * T
 {
 	if (!BarrelToSet || !TurretToSet)
 		return;
-
+	
 	Barrel = BarrelToSet;
 	Turret = TurretToSet;
 }
