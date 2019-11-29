@@ -63,6 +63,11 @@ void UTankAimingComponent::Initialise(UTankBarrel * BarrelToSet, UTankTurret * T
 	Turret = TurretToSet;
 }
 
+void UTankAimingComponent::SetProjectileBP(TSubclassOf<AProjectile> ShootingProjectile)
+{
+	ProjectileBlueprint = ShootingProjectile;
+}
+
 void UTankAimingComponent::AimAt(FVector HitLocation)
 {
 	if (!ensure(Barrel))
