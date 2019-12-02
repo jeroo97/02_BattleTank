@@ -44,8 +44,8 @@ public:
 
 	EFiringStatus GetFiringState() const;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Firing")
-	int Ammo = 3;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Firing")
+	int32 Ammo = 3;
 
 protected:
 	// Called when the game starts
