@@ -102,6 +102,11 @@ EFiringStatus UTankAimingComponent::GetFiringState() const
 	return FiringState;
 }
 
+int32 UTankAimingComponent::GetAmmoLeft() const
+{
+	return Ammo;
+}
+
 bool UTankAimingComponent::IsBarrelMoving()
 {
 	if (!ensure(Barrel))

@@ -44,8 +44,8 @@ public:
 
 	EFiringStatus GetFiringState() const;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Firing")
-	int32 Ammo = 3;
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+	int32 GetAmmoLeft() const;
 
 protected:
 	// Called when the game starts
@@ -69,11 +69,14 @@ private:
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	float ReloadTimeInSeconds = 3;
+	float ReloadTimeInSeconds = 2;
 
 	bool IsBarrelMoving();
 
 	void MoveBarrelTowards(FVector AimDirection);
 
 	double LastFireTime = 0;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	int32 Ammo = 10;
 };

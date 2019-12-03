@@ -5,6 +5,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "GameFramework/Actor.h"
+#include "PhysicsEngine/RadialForceComponent.h"
 #include "Projectile.h"
 
 // Sets default values
@@ -19,17 +20,35 @@ AProjectile::AProjectile()
 	CollisionMesh->SetVisibility(false);
 
 	LaunchBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("Launch Blast"));
-	LaunchBlast->AttachTo(RootComponent);
+	LaunchBlast->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	ImpactBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("Impact Blast"));
+	ImpactBlast->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	ImpactBlast->bAutoActivate = false;
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(FName("Projectile Movement"));
 	ProjectileMovement->bAutoActivate = false;
+
+	ExplosionForce = CreateDefaultSubobject<URadialForceComponent>(FName("Explosion Force"));
+	ExplosionForce->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 // Called when the game starts or when spawned
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	CollisionMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
+}
+
+void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& hit)
+{
+	LaunchBlast->Deactivate();
+	ImpactBlast->Activate();
+	ExplosionForce->FireImpulse();
+
+	/// Uncomment for implosion
+	//CollisionMesh->SetNotifyRigidBodyCollision(false);
+	//CollisionMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 // Called every frame
