@@ -46,6 +46,9 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	ImpactBlast->Activate();
 	ExplosionForce->FireImpulse();
 
+	FTimerHandle TimerSample;
+	GetWorld()->GetTimerManager().SetTimer(TimerSample, this, &AProjectile::OnTimerExpire, DestroyDelay);
+
 	/// Uncomment for implosion
 	//CollisionMesh->SetNotifyRigidBodyCollision(false);
 	//CollisionMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -62,5 +65,11 @@ void AProjectile::LaunchProjectile(float Speed)
 {
 	ProjectileMovement->SetVelocityInLocalSpace(FVector::ForwardVector * Speed);
 	ProjectileMovement->Activate();
+}
+
+void AProjectile::OnTimerExpire()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Timer expired"));
+	Destroy();
 }
 
