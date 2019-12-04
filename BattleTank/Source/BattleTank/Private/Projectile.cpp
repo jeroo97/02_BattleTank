@@ -6,6 +6,8 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "GameFramework/Actor.h"
 #include "PhysicsEngine/RadialForceComponent.h"
+#include "GameFramework/DamageType.h"
+#include "Kismet/GameplayStatics.h"
 #include "Projectile.h"
 
 // Sets default values
@@ -49,9 +51,10 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	FTimerHandle TimerSample;
 	GetWorld()->GetTimerManager().SetTimer(TimerSample, this, &AProjectile::OnTimerExpire, DestroyDelay);
 
-	/// Uncomment for implosion
-	//CollisionMesh->SetNotifyRigidBodyCollision(false);
-	//CollisionMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	UGameplayStatics::ApplyRadialDamage(this, ProjectileDamage, GetActorLocation(), ExplosionForce->Radius, UDamageType::StaticClass(), TArray<AActor*>() /*Damage all actors*/);
+
+	CollisionMesh->SetNotifyRigidBodyCollision(false);
+	CollisionMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 // Called every frame
@@ -69,7 +72,6 @@ void AProjectile::LaunchProjectile(float Speed)
 
 void AProjectile::OnTimerExpire()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Timer expired"));
 	Destroy();
 }
 
