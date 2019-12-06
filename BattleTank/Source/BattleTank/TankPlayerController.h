@@ -30,6 +30,11 @@ public:
 
 private:	
 
+	virtual void SetPawn(APawn* InPawn) override;
+
+	UFUNCTION()
+	void OnPlayerTankDeath();
+
 	UPROPERTY(EditDefaultsOnly)
 	float CrossHairXLocation = 0.5;
 

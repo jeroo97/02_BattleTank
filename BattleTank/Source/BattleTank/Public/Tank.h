@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "Tank.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSubjectName);
+
 class APawn;
 
 UCLASS()
@@ -13,6 +15,7 @@ class BATTLETANK_API ATank : public APawn
 	GENERATED_BODY()
 
 public:
+	FSubjectName TankDie;
 
 	// Called by the engine when actor damage is dealt.
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser) override;

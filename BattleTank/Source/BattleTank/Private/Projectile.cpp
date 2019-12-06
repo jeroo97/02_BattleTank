@@ -51,7 +51,18 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	FTimerHandle TimerSample;
 	GetWorld()->GetTimerManager().SetTimer(TimerSample, this, &AProjectile::OnTimerExpire, DestroyDelay);
 
-	UGameplayStatics::ApplyRadialDamage(this, ProjectileDamage, GetActorLocation(), ExplosionForce->Radius, UDamageType::StaticClass(), TArray<AActor*>() /*Damage all actors*/);
+	if(UGameplayStatics::ApplyRadialDamage(
+		this, 
+		ProjectileDamage, 
+		GetActorLocation(), 
+		ExplosionForce->Radius, 
+		UDamageType::StaticClass(), 
+		TArray<AActor*>() /*Damage all actors*/,
+		(AActor *)0, 
+		(AController *)0, 
+		true,
+		ECC_MAX))
+			UE_LOG(LogTemp, Warning, TEXT("%s has been hitted."), *hit.GetComponent()->GetName())
 
 	CollisionMesh->SetNotifyRigidBodyCollision(false);
 	CollisionMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -61,7 +72,6 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AProjectile::LaunchProjectile(float Speed)
