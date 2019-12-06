@@ -3,6 +3,7 @@
 #include "TankAIController.h"
 #include "GameFramework/Actor.h"
 #include "TankAimingComponent.h"
+#include "GameFramework/Pawn.h"
 #include "Tank.h" // So we can implement OnDeath.
 
 
@@ -27,7 +28,10 @@ void ATankAIController::SetPawn(APawn * InPawn)
 
 void ATankAIController::OnTankDeath()
 {
-	UE_LOG(LogTemp, Warning, TEXT("I'm death %s"), *GetName())
+	if (!GetPawn())
+		return;
+
+	GetPawn()->DetachFromControllerPendingDestroy();
 }
 
 void ATankAIController::Tick(float DeltaTime)

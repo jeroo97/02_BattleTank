@@ -40,22 +40,28 @@ float ATank::TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, cl
 
 	CurrentHealth -= DamageToApply;
 
-	if (!ensure(TankTurret))
-		return 0.0f;
-
 	if (CurrentHealth <= 0)
 	{
 		TankDie.Broadcast();
-		TankTurret->SetAbsolute(true, true, false);
-		TankTurret->SetWorldLocation(FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 100)/*FVector(9040.000000, -1540.000000, 1010.000000)*/);
-		TankTurret->SetSimulatePhysics(true);
-
-		auto ForceDeathExplosion = TankTurret->GetForwardVector() * 100 * 10;
-		auto TurretLocation = TankTurret->GetComponentLocation();
-		TankTurret->AddForceAtLocation(ForceDeathExplosion, TurretLocation);
-
-		// TODO Fix the continuous DeathExplosion movement of the turret every time it get's hit after death.
+		if (!bIsTankDeath)
+		{
+			TankDieBehaviour();
+			bIsTankDeath = true;
+		}
 	}
 
 	return DamageToApply;
+}
+
+void ATank::TankDieBehaviour()
+{
+	if (!ensure(TankTurret))
+		return;
+
+	TankTurret->SetAbsolute(true, true, false);
+	TankTurret->SetWorldLocation(FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 100)/*FVector(9040.000000, -1540.000000, 1010.000000)*/);
+	TankTurret->SetSimulatePhysics(true);
+	auto ForceDeathExplosion = TankTurret->GetForwardVector() * 1000;
+	auto TurretLocation = TankTurret->GetComponentLocation();
+	TankTurret->AddForceAtLocation(ForceDeathExplosion, TurretLocation);
 }

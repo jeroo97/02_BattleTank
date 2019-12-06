@@ -43,5 +43,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Health")
 	int32 CurrentHealth = StartingHealth;
+
+	bool bIsTankDeath = false;
+
+	void TankDieBehaviour();
  
 };
