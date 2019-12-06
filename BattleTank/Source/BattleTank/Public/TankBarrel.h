@@ -19,6 +19,7 @@ public:
 	void Elevate(float RelativeSpeed);
 
 private:
+
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	float MaxDegreesPerSecond = 10;
 

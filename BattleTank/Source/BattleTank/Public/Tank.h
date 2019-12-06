@@ -5,9 +5,10 @@
 #include "CoreMinimal.h"
 #include "Tank.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSubjectName);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDelegate);
 
 class APawn;
+class UTankTurret;
 
 UCLASS()
 class BATTLETANK_API ATank : public APawn
@@ -15,7 +16,10 @@ class BATTLETANK_API ATank : public APawn
 	GENERATED_BODY()
 
 public:
-	FSubjectName TankDie;
+	FTankDelegate TankDie;
+
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	void SetTurret(UTankTurret* TurretToSet);
 
 	// Called by the engine when actor damage is dealt.
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser) override;
@@ -34,6 +38,8 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Setup")
 	int32 StartingHealth = 100;
+
+	UTankTurret* TankTurret = nullptr;
 
 	UPROPERTY(VisibleAnywhere, Category = "Health")
 	int32 CurrentHealth = StartingHealth;

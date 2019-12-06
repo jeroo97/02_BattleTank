@@ -6,11 +6,13 @@
 #include "GameFramework/Actor.h"
 #include "TankAimingComponent.h"
 #include "Tank.h"
+#include "CollisionQueryParams.h"
 
 
 void ATankPlayerController::BeginPlay() 
 {
 	Super::BeginPlay();
+
 	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 	if (ensure(AimingComponent))
 	{
@@ -18,7 +20,7 @@ void ATankPlayerController::BeginPlay()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Player controller can't find aiming component at BeginPlay."));
+		UE_LOG(LogTemp, Error, TEXT("Player controller can't find aiming component at BeginPlay."));
 	}
 }
 
@@ -38,14 +40,16 @@ void ATankPlayerController::SetPawn(APawn * InPawn)
 		if (!ensure(PossessedTank))
 			return;
 
+		// Subscribe our local method to the tank's death event.
 		PossessedTank->TankDie.AddUniqueDynamic(this, &ATankPlayerController::OnPlayerTankDeath);
-		// TODO Subscribe our local method to the tank's death event.
 	}
 }
 
 void ATankPlayerController::OnPlayerTankDeath()
 {
-	UE_LOG(LogTemp, Warning, TEXT("I, the player: %s, am death at last."), *GetName())
+	UE_LOG(LogTemp, Warning, TEXT("I, the player: %s, am death at last."), *GetName());
+
+	StartSpectatingOnly();
 }
 
 void ATankPlayerController::AimTowardsCrosshair()
@@ -89,11 +93,14 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 	FHitResult HitResult;
 	auto StartLocation = PlayerCameraManager->GetCameraLocation();
 	auto EndLocation = StartLocation + (LookDirection * LineTraceRange);
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(GetPawn());
 	if (GetWorld()->LineTraceSingleByChannel(
 			HitResult,
 			StartLocation,
 			EndLocation,
-			ECollisionChannel::ECC_Visibility
+			ECollisionChannel::ECC_Visibility,
+			QueryParams
 			)
 		)
 	{
