@@ -25,6 +25,8 @@ float ATank::GetHealthPercent() const
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
+
+	CurrentHealth = StartingHealth;
 }
 
 void ATank::SetTurret(UTankTurret * TurretToSet)
@@ -59,9 +61,9 @@ void ATank::TankDieBehaviour()
 		return;
 
 	TankTurret->SetAbsolute(true, true, false);
-	TankTurret->SetWorldLocation(FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 100)/*FVector(9040.000000, -1540.000000, 1010.000000)*/);
+	TankTurret->SetWorldLocation(FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 100));
 	TankTurret->SetSimulatePhysics(true);
-	auto ForceDeathExplosion = TankTurret->GetForwardVector() * 1000;
+	auto ForceDeathExplosion = TankTurret->GetForwardVector() * 5000;
 	auto TurretLocation = TankTurret->GetComponentLocation();
 	TankTurret->AddForceAtLocation(ForceDeathExplosion, TurretLocation);
 }

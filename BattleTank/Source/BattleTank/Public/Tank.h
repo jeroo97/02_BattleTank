@@ -37,12 +37,12 @@ private:
 	ATank();
 
 	UPROPERTY(EditAnywhere, Category = "Setup")
-	int32 StartingHealth = 100;
+	int32 StartingHealth = 200;
 
 	UTankTurret* TankTurret = nullptr;
 
 	UPROPERTY(VisibleAnywhere, Category = "Health")
-	int32 CurrentHealth = StartingHealth;
+	int32 CurrentHealth; // Initialized on BeginPlay().
 
 	bool bIsTankDeath = false;
 
