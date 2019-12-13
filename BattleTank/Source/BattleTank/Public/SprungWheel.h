@@ -42,5 +42,14 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UPhysicsConstraintComponent* AxleWheelConstrain = nullptr;
 
+	bool bIsGrounded = false;
+
+	float TotalForceMagnitudeThisFrame = 0;
+
 	void SetupConstraints();
+
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	void ApplyForce();
 };
