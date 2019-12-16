@@ -27,8 +27,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void IntendTurnRight(float Throw);
 
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	void ActivateTurbo(bool bActivate);
+
 	UPROPERTY(EditDefaultsOnly)
 	float Speed = 40000000;
+
+	float NormalSpeed = Speed;
 
 private:
 	UTankTrack* LeftTrack = nullptr;

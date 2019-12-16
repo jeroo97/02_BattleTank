@@ -5,10 +5,13 @@
 #include "TankTrack.h"
 #include "SprungWheel.h"
 #include "SpawnPoint.h"
+#include "UObject/ConstructorHelpers.h"
+#include "Components/StaticMeshComponent.h"
 
 UTankTrack::UTankTrack()
 {
 	PrimaryComponentTick.bCanEverTick = false;
+
 }
 
 void UTankTrack::BeginPlay()

@@ -28,6 +28,20 @@ void UTankMovementComponent::IntendTurnRight(float Throw)
 	LeftTrack->SetThrottle(Throw);
 }
 
+void UTankMovementComponent::ActivateTurbo(bool bActivate)
+{
+	if (bActivate)
+	{
+		Speed = Speed * 20;
+		UE_LOG(LogTemp, Warning, TEXT("Turbo activated, speed = %f"), Speed);
+	}
+	else
+	{
+		Speed = NormalSpeed;
+		UE_LOG(LogTemp, Warning, TEXT("Turbo deactivated, speed = %f"), Speed);
+	}
+}
+
 void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, bool bForceMaxSpeed)
 {
 	// No need to call Super as we're replacing the functionality.
