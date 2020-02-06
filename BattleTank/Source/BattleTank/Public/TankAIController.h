@@ -16,7 +16,7 @@ class BATTLETANK_API ATankAIController : public AAIController
 
 protected:
 
-	// How colse can the AI tank get to the player.
+	// How close can the AI tank get to the player.
 	UPROPERTY(EditDefaultsOnly, Category = "Navigation")
 	float AcceptanceRadius = 8000;
 
